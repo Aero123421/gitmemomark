@@ -8,7 +8,7 @@ GitMemoMark is a developer preview. Security fixes target the latest source on t
 
 Please use [GitHub private vulnerability reporting](https://github.com/Aero123421/gitmemomark/security/advisories/new). Do **not** open a public issue for an exploitable vulnerability, leaked credential, or private page/repository data.
 
-**Maintainer release prerequisite:** enable “Private vulnerability reporting” under the repository's Settings → Security before advertising this channel. The link works only when that feature is enabled. If unavailable, do not post sensitive details publicly; ask the maintainer for a private contact method without disclosing the vulnerability.
+Private vulnerability reporting is enabled for this repository. If the link is unavailable, do not post sensitive details publicly; ask the maintainer for a private contact method without disclosing the vulnerability.
 
 Include the affected version, browser/OS, impact, and minimal reproduction using synthetic content and a disposable repository. Redact tokens, API keys, authenticated cookies, browser profiles and personal/private content. Allow time for triage and a fix before coordinated public disclosure.
 
