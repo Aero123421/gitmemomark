@@ -1,0 +1,89 @@
+.gmm-btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.gmm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-left: -8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #788493;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.gmm-btn-wrap.gmm-new .gmm-btn {
+  width: 36px;
+  height: 36px;
+  margin: 0 2px;
+}
+
+.gmm-btn:hover,
+.gmm-btn:focus-visible {
+  background: rgba(59, 130, 246, 0.14);
+  color: #3b82f6;
+}
+
+.gmm-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.gmm-btn.gmm-busy {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.gmm-btn.gmm-done {
+  color: rgb(26, 127, 55);
+}
+
+.gmm-toast {
+  position: fixed;
+  z-index: 2147483647;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  max-width: min(480px, 90vw);
+  padding: 10px 16px;
+  border-radius: 10px;
+  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #fff;
+  white-space: pre-line;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.4s;
+}
+
+.gmm-toast.gmm-ok {
+  background: #1a7f37;
+}
+
+.gmm-toast.gmm-ng {
+  background: #cf222e;
+}
+
+.gmm-toast.gmm-info {
+  background: #0969da;
+}
+
+/* Host X appearance can differ from the OS. Neutral slate and cobalt icons
+   remain legible on either host canvas without guessing its theme. */
+
+.gmm-toast.gmm-hide {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gmm-btn,
+  .gmm-toast {
+    transition: none;
+  }
+}

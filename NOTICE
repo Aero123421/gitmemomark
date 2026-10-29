@@ -1,0 +1,19 @@
+GitMemoMark
+Copyright 2026 GitMemoMark contributors
+
+GitMemoMark original code and documentation are licensed under the Apache
+License, Version 2.0. This notice does not change any license terms.
+
+This distribution includes Mozilla Readability 0.6.0:
+Copyright (c) 2010 Arc90 Inc
+Licensed under the Apache License, Version 2.0.
+See src/vendor/LICENSE.readability.md and src/vendor/LICENSE.apache-2.0.txt.
+
+It also includes Turndown 7.2.4 and turndown-plugin-gfm 1.0.2:
+Copyright (c) 2017 Dom Christie
+Licensed under the MIT License; see the full retained license texts in
+src/vendor/LICENSE.turndown and src/vendor/LICENSE.turndown-plugin-gfm.
+GitMemoMark modifies Turndown's sibling-node conversion accumulation to use
+an array and a linear-time join instead of repeated whole-output concatenation.
+
+See THIRD_PARTY_NOTICES.md for component attribution and upstream links.

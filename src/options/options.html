@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GitMemoMark の設定</title>
+    <script src="../lib/theme-init.js"></script>
+    <link rel="stylesheet" href="../styles/tokens.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <h1><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 21V4h12v17l-6-4z"/></svg></span> GitMemoMark の設定</h1>
+      <p class="lead">X のポストや Web ページを、あなたの GitHub リポジトリにフォルダ分けして保存します。</p>
+
+      <nav aria-label="設定のセクション"><a href="#destination">保存先</a><a href="#saving">保存と表示</a><a href="#classification">フォルダ・自動仕分け</a><a href="#integration">サイト連携</a></nav>
+      <form id="form">
+        <!-- GitHub -->
+        <section id="destination">
+          <h2>01 · 保存先の GitHub リポジトリ</h2>
+          <div class="grid">
+            <label>オーナー（ユーザー名 / Organization）<input id="gh-owner" required placeholder="yourname" /></label>
+            <label>リポジトリ名<input id="gh-repo" required placeholder="my-bookmarks" /></label>
+            <label>ブランチ<input id="gh-branch" placeholder="main" /></label>
+            <label>保存先のルートフォルダ（任意）<input id="gh-base" placeholder="空ならリポジトリ直下（例: bookmarks）" /></label>
+          </div>
+          <label>アクセストークン
+            <input id="gh-token" type="password" autocomplete="off" placeholder="github_pat_..." />
+          </label>
+          <details class="help">
+            <summary>トークンの作り方</summary>
+            <ol>
+              <li>
+                <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noreferrer">GitHub → Fine-grained personal access token の作成画面</a>を開く
+              </li>
+              <li>「Repository access」→「Only select repositories」で保存先のリポジトリだけを選ぶ</li>
+              <li>「Permissions」→「Contents」を <b>Read and write</b> にする</li>
+              <li>作成したトークンをここに貼り付ける</li>
+            </ol>
+            <p>トークンはこのブラウザの中（chrome.storage.local）にだけ保存され、同期されません。</p>
+          </details>
+          <div class="row">
+            <button type="button" id="test-gh" class="secondary">接続テスト</button>
+            <span id="test-gh-result" class="result" aria-live="polite"></span>
+          </div>
+        </section>
+
+        <!-- 保存のしかた -->
+        <section id="saving">
+          <h2>02 · 保存と表示</h2>
+          <label>テーマ<select id="theme"><option value="system">システムに合わせる</option><option value="light">ライト</option><option value="dark">ダーク</option></select><small>テーマはこのブラウザに保存され、保存画面にも反映されます。</small></label>
+          <fieldset>
+            <legend>保存ボタンを押したとき</legend>
+            <label class="choice">
+              <input type="radio" name="saveMode" value="ask" />
+              <span><b>毎回フォルダを選ぶ</b><small>保存画面が開きます。Jev が有効なら、おすすめのフォルダが最初から選ばれた状態になります。</small></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="saveMode" value="quick" />
+              <span><b>画面を出さずにすぐ保存</b><small>ワンクリックで保存されます。保存先は下の設定に従います。</small></span>
+            </label>
+          </fieldset>
+
+          <fieldset id="quick-target-box">
+            <legend>すぐ保存するときの保存先<small>（ショートカット Alt+Shift+S や右クリックの「すぐ保存」にも使われます）</small></legend>
+            <label class="choice">
+              <input type="radio" name="quickTarget" value="auto" />
+              <span><b>Jev で自動仕分け</b><small>判定の自信が低いときは未仕分けフォルダに入ります。Jev が未設定のときも未仕分けフォルダに入ります。</small></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="quickTarget" value="unsorted" />
+              <span><b>未仕分けフォルダにまとめて入れる</b><small>あとで自分で整理したい人向け。ドメインルールに一致したものだけはそのフォルダに入ります。</small></span>
+            </label>
+          </fieldset>
+
+          <label>未仕分けフォルダの名前<input id="unsorted" placeholder="_unsorted" /></label>
+        </section>
+
+        <!-- フォルダ -->
+        <section id="classification">
+          <h2>03 · フォルダ</h2>
+          <p class="note">リポジトリに既にあるフォルダは自動で候補になります。ここに書いておくと、まだ空のフォルダも候補に出て、説明は Jev の判断材料になります。</p>
+          <label>フォルダと説明（1 行に 1 つ、「フォルダ: 説明」）
+            <textarea id="folder-hints" rows="6" placeholder="tech: プログラミング・技術記事・開発ツール&#10;tech/ai: AI・機械学習・LLM&#10;recipe: 料理のレシピ&#10;ideas: 気になったアイデア・ビジネス"></textarea>
+          </label>
+          <div class="row">
+            <button type="button" id="load-folders" class="secondary">リポジトリのフォルダを読み込む</button>
+            <span id="load-folders-result" class="result" aria-live="polite"></span>
+          </div>
+          <label>ドメインルール（1 行に 1 つ、「ドメイン = フォルダ」。Jev より優先されます）
+            <textarea id="domain-rules" rows="3" placeholder="zenn.dev = tech&#10;cookpad.com = recipe"></textarea>
+          </label>
+          <h3>Jev による自動仕分け</h3>
+          <p class="note">
+            <a href="https://typesafe.ai/" target="_blank" rel="noreferrer">TypeSafe</a> の Jev に、タイトル・URL・サイト名・説明文・選択テキスト・メモ・候補フォルダを送ります。
+            保存画面を開いた時点でも自動判定します（キャンセルしても送信済みです）。本文・X の本文は既定では送信しません。
+            ドメインルールに一致した場合と除外ドメインは送信しません。API 利用料がかかります。
+          </p>
+          <label class="check"><input type="checkbox" id="jev-enabled" /> Jev の自動仕分けを使う</label>
+          <fieldset id="jev-fields" hidden><legend>Jev の詳細設定</legend>
+          <label class="check"><input type="checkbox" id="jev-send-content" /> 本文も Jev に送信する（Web / X の先頭 2000 文字、既定 OFF）</label>
+          <label>Jev に送信しないドメイン（1 行に 1 つ、サブドメインも除外）
+            <textarea id="jev-exclude-domains" rows="3" placeholder="internal.example.com&#10;private.example.org"></textarea>
+          </label>
+          <p class="note">候補は深さ 3 階層まで、説明のあるフォルダを優先して最大 255 個を送信します。保存画面ではメモを入力後「再判定」を押すと反映されます。</p>
+          <div class="grid">
+            <label>API キー
+              <input id="jev-key" type="password" autocomplete="off" placeholder="TypeSafe の API キー" />
+            </label>
+            <label>モデル<input id="jev-model" placeholder="jev-latest" /></label>
+          </div>
+          <label>確信度のしきい値: <output id="jev-threshold-out"></output>
+            <input id="jev-threshold" type="range" min="0" max="0.95" step="0.05" />
+            <small>Choice の confidence がこれより低い、または Noul（適合度）が 50% 未満のときは未仕分けフォルダに入れます。</small>
+          </label>
+          <p class="note">API キーは <a href="https://console.typesafe.ai/keys" target="_blank" rel="noreferrer">TypeSafe console</a> で取得できます。</p>
+          <div class="row">
+            <button type="button" id="test-jev" class="secondary">接続テスト</button>
+            <span id="test-jev-result" class="result" aria-live="polite"></span>
+          </div>
+          </fieldset>
+        </section>
+
+        <!-- X -->
+        <section id="integration">
+          <h2>04 · サイト連携</h2><h3>X (Twitter)</h3>
+          <label class="check"><input type="checkbox" id="x-button" /> 各ポストに「GitHub に保存」ボタンを表示する<small>（Shift+クリックでダイアログなしで保存）</small></label>
+          <label class="check"><input type="checkbox" id="x-sync" /> X のブックマークボタンを押したら、自動で GitHub にも保存する<small>（「すぐ保存」の保存先ルールに従います）</small></label>
+          <h3>Web ページ</h3>
+          <label class="check"><input type="checkbox" id="web-content" /> ページの本文を Markdown に変換して保存する<small>（広告やメニューを除いた記事本文だけを取り出します）</small></label>
+          <label>本文の最大文字数<input id="web-max" type="number" min="1000" max="300000" step="1000" /></label>
+          <h3>一覧ファイル</h3>
+          <label class="check"><input type="checkbox" id="update-index" /> 保存するたびに INDEX.md（一覧ファイル）を更新する</label>
+        </section>
+
+        <div class="savebar">
+          <button type="submit" class="primary">設定を保存</button>
+          <span id="save-result" class="result" aria-live="polite"></span>
+        </div>
+      </form>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

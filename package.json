@@ -1,0 +1,11 @@
+{
+  "name": "gitmemomark",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Developer-preview Chrome extension for saving bookmarks to your GitHub repository",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": { "test": "node --test tests/*.test.mjs" },
+  "repository": { "type": "git", "url": "https://github.com/Aero123421/gitmemomark.git" }
+}

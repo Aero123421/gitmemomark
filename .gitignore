@@ -1,0 +1,41 @@
+# Dependencies / local tooling
+node_modules/
+coverage/
+.nyc_output/
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Credentials and environment exports (examples may be intentionally checked in)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials/
+credentials.*
+secrets/
+secrets.*
+
+# Browser profiles and authenticated/local artifacts
+profiles/
+profile/
+chrome-profile*/
+browser-profile*/
+user-data*/
+.local/
+local/
+artifacts/
+test-results/
+playwright-report/
+*.har
+*.trace
+*.zip
+*.crx
+
+# Design experiments and stale screenshots are not release assets
+/docs/design/
+/screenshots/*
+!/screenshots/release-*.png
