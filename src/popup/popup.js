@@ -17,7 +17,15 @@ let classificationRun = 0;
 let extractionWarning = "";
 let folderWarning = "";
 function showSuggestion(text = "") {
-  $("suggest").textContent = [extractionWarning, folderWarning, text].filter(Boolean).join("\n");
+  const message = [extractionWarning, folderWarning, text].filter(Boolean).join("\n");
+  $("suggest").textContent = message;
+  // Keep the full live-region announcement; an uncomplicated recommendation is
+  // presented as a compact seal rather than a second paragraph in the tray.
+  $("suggest").classList.toggle("quiet", !extractionWarning && !folderWarning && /^Jev のおすすめ: [^\n]+$/.test(text));
+  const recommendation = text.match(/^Jev のおすすめ: .+（(\d+%)）$/);
+  $("classification-seal").hidden = !recommendation;
+  $("classification-seal").textContent = recommendation ? `Jev 推奨 ${recommendation[1]}` : "";
+  $("classification-seal").title = text;
 }
 
 function send(msg) {
@@ -61,7 +69,8 @@ async function loadItem() {
 
 function renderItem() {
   $("source-badge").textContent = item.source === "x" ? "X ポスト" : "Web";
-  $("url").textContent = item.url;
+  $("url").textContent = item.url.replace(/^https?:\/\//, "");
+  $("url").title = item.url;
   $("url").href = item.url;
   $("title").value = item.title || item.url;
   const excerpt = item.selection || item.text || item.description || "";
@@ -166,7 +175,7 @@ $("new-folder-btn").addEventListener("click", () => {
 });
 
 $("form").addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !e.isComposing && e.keyCode !== 229) {
     e.preventDefault();
     $("form").requestSubmit();
   }

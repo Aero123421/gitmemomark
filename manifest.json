@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GitMemoMark",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage_url": "https://github.com/Aero123421/gitmemomark",
   "description": "X のポストや Web ページを、あなたの GitHub リポジトリにフォルダ分けして保存するブックマーク拡張機能。Jev による自動仕分けにも対応。",
   "icons": {
